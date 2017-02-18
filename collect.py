@@ -3,15 +3,17 @@ import csv
 import pdb
 import time
 from config import Config
+import os
 
 ##Script to collect data using sightcorp api
 
 def get_data(image_file):
     time.sleep(1)
+    working_directory = os.getcwd()
     json_resp = requests.post( 'http://api.sightcorp.com/api/detect/',
               data   = { 'app_key'   : Config.KEY,
                          'client_id' : Config.CLIENT},
-              files  = { 'img'       : ( 'team', open( image_file, 'rb' ) ) } )
+              files  = { 'img'       : ( 'team', open( working_directory + image_file, 'rb' ) ) } )
 
     return json_resp.json()
 
@@ -54,4 +56,5 @@ def collect_data(input_file, output_file):
         print ioe
     
 def test():
-    collect_data('/home/maria/Desktop/ciacicode/emo/data/input.csv','/home/maria/Desktop/ciacicode/emo/data/output.csv')
+    working_directory = os.getcwd()
+    collect_data(working_directory + '/data/input.csv',working_directory + '/data/output.csv')
