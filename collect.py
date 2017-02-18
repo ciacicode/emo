@@ -4,16 +4,17 @@ import pdb
 import time
 from config import Config
 import numpy
+import os
 
 ##Script to collect data using sightcorp api
 
 def get_data(image_file):
     time.sleep(1)
-    json_resp = requests.post('http://api.sightcorp.com/api/detect/',
-                              data={'app_key': Config.KEY,
-                                    'client_id': Config.CLIENT},
-                              files={'img': ('team', open(image_file, 'rb'))})
-
+    working_directory = os.getcwd()
+    json_resp = requests.post( 'http://api.sightcorp.com/api/detect/',
+              data   = { 'app_key'   : Config.KEY,
+                         'client_id' : Config.CLIENT},
+              files  = { 'img'       : ( 'team', open( working_directory + image_file, 'rb' ) ) } )
     return json_resp.json()
 
 
@@ -32,25 +33,26 @@ def collect_data(input_file, output_file):
                         # get data for the team
                         person_details = dict()
                         d = get_data(row['file_path'])
-                        for person in d['persons']:
-                            # compose dict
-                            try:
-
-                                person_details['team'] = row['team']
-                                person_details['match'] = row['match']
-                                person_details['result'] = row['result']
-                                person_details['mood'] = person['mood']['value']
-                                person_details['mood_confidence'] = person['mood']['confidence']
-                                person_details['anger'] = person['expressions']['anger']['value']
-                                person_details['disgust'] = person['expressions']['disgust']['value']
-                                person_details['fear'] = person['expressions']['fear']['value']
-                                person_details['happiness'] = person['expressions']['happiness']['value']
-                                person_details['neutral'] = person['expressions']['neutral']['value']
-                                person_details['sadness'] = person['expressions']['sadness']['value']
-                                person_details['surprise'] = person['expressions']['surprise']['value']
-                                writer.writerow(person_details)
-                            except KeyError as ke:
-                                print ke
+                        try:
+                            for person in d['persons']:
+                                #compose dict
+                                    person_details['team'] = row['team']
+                                    person_details['match'] = row['match']
+                                    person_details['result'] = row['result']
+                                    person_details['mood'] = person['mood']['value']
+                                    person_details['mood_confidence'] = person['mood']['confidence']
+                                    person_details['anger'] = person['expressions']['anger']['value']
+                                    person_details['disgust'] = person['expressions']['disgust']['value']
+                                    person_details['fear'] = person['expressions']['fear']['value']
+                                    person_details['happiness'] = person['expressions']['happiness']['value']
+                                    person_details['neutral'] = person['expressions']['neutral']['value']
+                                    person_details['sadness'] = person['expressions']['sadness']['value']
+                                    person_details['surprise'] = person['expressions']['surprise']['value']
+                                    writer.writerow(person_details)
+                        except KeyError as ke:
+                            print ke
+                            print d
+                            print person
             except IOError as ioe:
                 print
                 ioe
@@ -99,9 +101,7 @@ def calculate_average():
     return fear_dict
 
 def test():
-    collect_data('/home/maria/Desktop/ciacicode/emo/data/input.csv',
-                 '/home/maria/Desktop/ciacicode/emo/data/output.csv')
+    working_directory = os.getcwd()
+    collect_data(working_directory + '/data/input.csv',working_directory + '/data/output.csv')
     fear_dict = calculate_average()
     print(fear_dict)
-
-test()

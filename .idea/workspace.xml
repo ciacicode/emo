@@ -2,8 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1433bc87-875e-436c-88de-9c7d3541de51" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/img/bay_bay_ars.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/img/ben_ben_bor.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/img/bor_ben_bor.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/img/bra_bra_ger.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/img/fra_fra_port.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/img/ger_bra_ger.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/img/juv_juv_sev.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/img/port_fra_port.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/img/sev_juv_sev.jpg" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/.~lock.output.csv#" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/.~lock.summary.ods#" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/collect.py" afterPath="$PROJECT_DIR$/collect.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/.~lock.input.csv#" afterPath="$PROJECT_DIR$/data/.~lock.input.csv#" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/input.csv" afterPath="$PROJECT_DIR$/data/input.csv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/output.csv" afterPath="$PROJECT_DIR$/data/output.csv" />
     </list>
     <ignored path="emo.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -27,8 +42,8 @@
       <file leaf-file-name="collect.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/collect.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6908397">
-              <caret line="107" column="0" selection-start-line="107" selection-start-column="0" selection-end-line="107" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.36068702">
+              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -300,8 +315,8 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/collect.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6908397">
-          <caret line="107" column="0" selection-start-line="107" selection-start-column="0" selection-end-line="107" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.36068702">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>

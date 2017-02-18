@@ -1,5 +1,13 @@
 file_path,team,match,result
-/home/maria/Desktop/ciacicode/emo/data/img/real_real_nap.jpg,real,real_nap,1
-/home/maria/Desktop/ciacicode/emo/data/img/nap_real_nap.jpg,nap,real_nap,0
-/home/maria/Desktop/ciacicode/emo/data/img/psg_psg_barca.jpg,psg,psg_barca,1
-/home/maria/Desktop/ciacicode/emo/data/img/barca_psg_barca.jpg,barca,psg_barca,0
+/data/img/real_real_nap.jpg,real,real_nap,1
+/data/img/nap_real_nap.jpg,nap,real_nap,0
+/data/img/psg_psg_barca.jpg,psg,psg_barca,1
+/data/img/barca_psg_barca.jpg,barca,psg_barca,0
+/data/img/ben_ben_bor.jpg,ben,ben_bor,1
+/data/img/bor_ben_bor.jpg,bor,ben_bor,0
+/data/img/sev_juv_sev.jpg,sev,juv_sev,2
+/data/img/juv_juv_sev.jpg,juv,juv_sev,2
+/data/img/bra_bra_ger.jpg,bra,bra_ger,0
+/data/img/ger_bra_ger.jpg,ger,bra_ger,1
+/data/img/fra_fra_port.jpg,fra,fra_port,0
+/data/img/port_fra_port.jpg,port,fra_port,1
