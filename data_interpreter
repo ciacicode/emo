@@ -50,6 +50,8 @@ def calculate_average(output_file):
             surprise_dict[key] = surprise_dict[key] / counter_dict[key]
     except KeyError as ke:
         print ke
+    return fear_dict
 
 working_directory = os.getcwd()
-calculate_average(working_directory + '/data/output.csv')
+fear_dict = calculate_average(working_directory + '/data/output.csv')
+print(fear_dict)

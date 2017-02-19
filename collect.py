@@ -14,22 +14,21 @@ def get_data(image_file):
               data   = { 'app_key'   : Config.KEY,
                          'client_id' : Config.CLIENT},
               files  = { 'img'       : ( 'team', open( working_directory + image_file, 'rb' ) ) } )
-    return json_resp.json()
 
+    return json_resp.json()
 
 def collect_data(input_file, output_file):
     try:
-        with open(output_file, 'w') as ofile:
-            fieldnames = ['team', 'match', 'result', 'mood', 'mood_confidence', 'fear', 'anger', 'disgust', 'happiness',
-                          'neutral', 'sadness', 'surprise']
+        with open(output_file,'wa') as ofile:
+            fieldnames = ['team', 'match', 'result', 'mood', 'mood_confidence','fear','anger','disgust','happiness','neutral','sadness','surprise']
             writer = csv.DictWriter(ofile, fieldnames=fieldnames)
-            # write file header as a start
+            #write file header as a start
             writer.writeheader()
             try:
                 with open(input_file, 'rb') as ifile:
                     reader = csv.DictReader(ifile)
                     for row in reader:
-                        # get data for the team
+                        #get data for the team
                         person_details = dict()
                         d = get_data(row['file_path'])
                         try:
@@ -53,15 +52,10 @@ def collect_data(input_file, output_file):
                             print d
                             print person
             except IOError as ioe:
-                print
-                ioe
+                print ioe
     except IOError as ioe:
-        print
-        ioe
-
+        print ioe
 
 def test():
     working_directory = os.getcwd()
     collect_data(working_directory + '/data/input.csv',working_directory + '/data/output.csv')
-
-test()
