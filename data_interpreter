@@ -1,15 +1,12 @@
-import requests
 import csv
-import pdb
-import time
-from config import Config
 import os
+import numpy as np
 
-def calculate_average(output_file):
+# <editor-fold desc="function create matrix from csv">
+def create_matrix_from_csv(file, theta= None):
     try:
-        with open(output_file, 'rb') as ofile:
-            print("Opening output file")
-            reader = csv.DictReader(ofile)
+        with open(file, 'rb') as ofile:
+            reader = csv.DictReader(ofile, lineterminator='\n')
             # create one dictionary per type
             result_dict = dict()
             fear_dict = dict()
@@ -20,24 +17,33 @@ def calculate_average(output_file):
             sadness_dict = dict()
             surprise_dict = dict()
             counter_dict = dict()
-            print ("dictionaires created")
+            list_games = []
             # for each key (team + game): sums the indexes
             for row in reader:
-                print("opening row")
-                key = row['team'] + '_in_' + row['match']
-                result_dict[key] = row['result']
+                if row['match'] not in list_games:
+                    list_games.append(row['match'])
+                key = row['match'] + ' for ' + row['team']
+                if theta == None:
+                    result_dict[key] = int(row['goal_diff'])
                 if key not in fear_dict:
-                    print(fear_dict)
                     fear_dict[key] = int(row['fear'])
+                    anger_dict[key] = int(row['anger'])
+                    disgust_dict[key] = int(row['disgust'])
+                    happiness_dict[key] = int(row['happiness'])
+                    neutral_dict[key] = int(row['neutral'])
+                    sadness_dict[key] = int(row['sadness'])
+                    surprise_dict[key] = int(row['surprise'])
+                    counter_dict[key] = 1
+
                 else:
                     fear_dict[key] += int(row['fear'])
-                    anger_dict[key] = anger_dict[key] + int(row['anger'])
-                    disgust_dict[key] = disgust_dict[key] + int(row['disgust'])
-                    happiness_dict[key] = happiness_dict[key] + int(row['happiness'])
-                    neutral_dict[key] = neutral_dict[key] + int(row['neutral'])
-                    sadness_dict[key] = sadness_dict[key] + int(row['sadness'])
-                    surprise_dict[key] = surprise_dict[key] + int(row['surprise'])
-                    counter_dict[key] = counter_dict[key] + 1
+                    anger_dict[key] += int(row['anger'])
+                    disgust_dict[key] += int(row['disgust'])
+                    happiness_dict[key] += int(row['happiness'])
+                    neutral_dict[key] += int(row['neutral'])
+                    sadness_dict[key] += int(row['sadness'])
+                    surprise_dict[key] += int(row['surprise'])
+                    counter_dict[key] += 1
 
         # now calculate the average
         for key in fear_dict:
@@ -48,10 +54,116 @@ def calculate_average(output_file):
             neutral_dict[key] = neutral_dict[key] / counter_dict[key]
             sadness_dict[key] = sadness_dict[key] / counter_dict[key]
             surprise_dict[key] = surprise_dict[key] / counter_dict[key]
+
     except KeyError as ke:
         print ke
-    return fear_dict
 
-working_directory = os.getcwd()
-fear_dict = calculate_average(working_directory + '/data/output.csv')
-print(fear_dict)
+    consolidated_fear_dict = dict()
+    consolidated_anger_dict = dict()
+    consolidated_disgust_dict = dict()
+    consolidated_happiness_dict = dict()
+    consolidated_sadness_dict = dict()
+    consolidated_surprise_dict = dict()
+    consolidated_result_dict = dict()
+
+    # for each game, find the 2 dictionaries and calculate the difference of variable
+    for i in range(0,len(fear_dict)):
+        if i % 2 == 0:
+            match = list_games[i/2]
+            consolidated_fear_dict[match] = consolidate(fear_dict, match)
+            consolidated_anger_dict[match] = consolidate(anger_dict, match)
+            consolidated_disgust_dict[match] = consolidate(disgust_dict, match)
+            consolidated_happiness_dict[match] = consolidate(happiness_dict, match)
+            consolidated_sadness_dict[match] = consolidate(sadness_dict, match)
+            consolidated_surprise_dict[match] = consolidate(surprise_dict,match)
+    print("list games:")
+    print(list_games)
+
+    if theta == None:
+        # for each game, check the goal difference
+        for game in list_games:
+            consolidated_result_dict[game] = result_dict[game + " for " + game.split('_')[0]]
+
+    #initialize matrixes X and y
+    X_matrix_array = []
+    y_matrix_array = []
+
+    for game in list_games:
+        # the array needs to start with a 1 for the bias (theta 0)
+        array_to_push = [1,consolidated_fear_dict[game],consolidated_anger_dict[game],consolidated_disgust_dict[game],consolidated_happiness_dict[game],consolidated_sadness_dict[game],consolidated_surprise_dict[game]]
+        X_matrix_array.append(array_to_push)
+        if theta == None:
+            # fill the y matrix array
+            y_matrix_array.append([consolidated_result_dict[game]])
+
+    # now create matrixes
+    X = np.matrix(X_matrix_array)
+    y = np.matrix(y_matrix_array)
+    print("Consolidated fear dict:")
+    print(consolidated_fear_dict)
+
+    if theta == None:
+        return X, y, consolidated_result_dict, list_games
+    else:
+        return X, list_games
+# </editor-fold>
+
+# <editor-fold desc="function consolidate (calculates difference team averages)">
+def consolidate(dictionary, match):
+    #result_array = [value for key, value in dictionary.items() if match in key.lower()]
+    result_array = match.split("_")
+    result_array
+    return dictionary[match + ' for ' + result_array[0]] - dictionary[match + ' for ' + result_array[1]]
+# </editor-fold>
+
+def calculate_theta(X,y,result_dict,list_games):
+    print("X :")
+    print(X)
+    print("y :")
+    print(y)
+
+    #  theta = (XT * X)^-1 * XT * y
+    Xt = X.getT()
+    XtX = Xt * X
+    theta = (Xt * X).getI() * Xt * y
+
+    print("Theta:")
+    print(theta)
+
+    # now determine the difference between model and reality
+    predicted_goal_diff = X * theta
+    print("Preditected goal diff:")
+    print(predicted_goal_diff)
+    J = np.subtract(predicted_goal_diff, y)
+
+    game_array = []
+    for i in range(0, len(list_games)):
+        game_array.append([list_games[i]])
+
+    game_matrix = np.matrix(game_array)
+
+    summary_matrix = np.concatenate((game_matrix,J),axis=1)
+    print("Cost J for each game:")
+    print(summary_matrix)
+
+    return theta
+
+def main():
+
+    working_directory = os.getcwd()
+    predict_file_path = working_directory + '/data/predict.csv'
+    training_file_path = working_directory + '/data/output.csv'
+    X, y, result_dict, list_games = create_matrix_from_csv(training_file_path)
+    theta = calculate_theta(X,y,result_dict,list_games)
+
+    predictions, list_games_predicted = predict_from_csv(predict_file_path, theta)
+    print("List of games :")
+    print(list_games_predicted)
+    print("Predictions:")
+    print(predictions)
+
+
+def predict_from_csv(predict_file_path, theta):
+    X, list_games = create_matrix_from_csv(predict_file_path, theta)
+    predictions = theta * X
+    return predictions, list_games_predicted
