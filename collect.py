@@ -19,7 +19,7 @@ def get_data(image_file):
 
 def collect_data(input_file, output_file):
     try:
-        with open(output_file,'wa') as ofile:
+        with open(output_file,'w') as ofile:
             fieldnames = ['team', 'match', 'result', 'mood', 'mood_confidence','fear','anger','disgust','happiness','neutral','sadness','surprise']
             writer = csv.DictWriter(ofile, fieldnames=fieldnames)
             #write file header as a start
