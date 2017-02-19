@@ -167,3 +167,5 @@ def predict_from_csv(predict_file_path, theta):
     X, list_games = create_matrix_from_csv(predict_file_path, theta)
     predictions = theta * X
     return predictions, list_games_predicted
+
+main()
