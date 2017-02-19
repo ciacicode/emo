@@ -20,7 +20,7 @@ def get_data(image_file):
 def collect_data(input_file, output_file):
     try:
         with open(output_file,'w') as ofile:
-            fieldnames = ['team', 'match', 'result', 'mood', 'mood_confidence','fear','anger','disgust','happiness','neutral','sadness','surprise']
+            fieldnames = ['team', 'match', 'result', 'mood', 'mood_confidence','fear','anger','disgust','happiness','neutral','sadness','surprise', 'goal_diff']
             writer = csv.DictWriter(ofile, fieldnames=fieldnames)
             #write file header as a start
             writer.writeheader()
@@ -37,6 +37,7 @@ def collect_data(input_file, output_file):
                                     person_details['team'] = row['team']
                                     person_details['match'] = row['match']
                                     person_details['result'] = row['result']
+                                    person_details['goal_diff'] = row['goal_diff']
                                     person_details['mood'] = person['mood']['value']
                                     person_details['mood_confidence'] = person['mood']['confidence']
                                     person_details['anger'] = person['expressions']['anger']['value']
@@ -49,7 +50,7 @@ def collect_data(input_file, output_file):
                                     writer.writerow(person_details)
                         except KeyError as ke:
                             print ke
-                            print d
+                            print row['file_path']
                             print person
             except IOError as ioe:
                 print ioe
