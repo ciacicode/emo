@@ -8,6 +8,7 @@ __pycache__/
 
 # Configs
 config.py
+*.ods
 
 # Distribution / packaging
 .Python
