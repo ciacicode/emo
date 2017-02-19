@@ -19,7 +19,7 @@ def get_data(image_file):
 
 def collect_data(input_file, output_file):
     try:
-        with open(output_file,'wa') as ofile:
+        with open(output_file,'w') as ofile:
             fieldnames = ['team', 'match', 'result', 'mood', 'mood_confidence','fear','anger','disgust','happiness','neutral','sadness','surprise']
             writer = csv.DictWriter(ofile, fieldnames=fieldnames)
             #write file header as a start
@@ -55,7 +55,7 @@ def collect_data(input_file, output_file):
                 print ioe
     except IOError as ioe:
         print ioe
-    
+
 def test():
     working_directory = os.getcwd()
     collect_data(working_directory + '/data/input.csv',working_directory + '/data/output.csv')
