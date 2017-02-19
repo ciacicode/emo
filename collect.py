@@ -3,7 +3,6 @@ import csv
 import pdb
 import time
 from config import Config
-import numpy
 import os
 
 ##Script to collect data using sightcorp api
@@ -61,47 +60,8 @@ def collect_data(input_file, output_file):
         ioe
 
 
-def calculate_average():
-    with open(output_file, 'rb') as ofile:
-        reader = csv.DictReader(ofile)
-        # create a table to contain all the data. format [[team, match, result, fear...surprise],[...]]
-        result_dict= dict()
-        fear_dict = dict()
-        anger_dict = dict()
-        disgust_dict = dict()
-        happiness_dict = dict()
-        neutral_dict = dict()
-        sadness_dict = dict()
-        surprise_dict = dict()
-        counter_dict = dict()
-
-        # for each key (team + game): sums the indexes
-        for row in reader:
-            key = get_data(row['team']) + '_in_' + get_data(row['match'])
-            result_dict[key] = get_data(row['result'])
-            fear_dict[key] = fear_dict[key] + int(row['fear'])
-            anger_dict[key] = anger_dict[key] + int(row['anger'])
-            disgust_dict[key] = disgust_dict[key] + int(row['disgust'])
-            happiness_dict[key] = happiness_dict[key] + int(row['happiness'])
-            neutral_dict[key] = neutral_dict[key] + int(row['neutral'])
-            sadness_dict[key] = sadness_dict[key] + int(row['sadness'])
-            surprise_dict[key] = surprise_dict[key] + int(row['surprise'])
-            counter_dict[key] = counter_dict[key] + 1
-
-    # now calculate the average
-    for key in fear_dict:
-        fear_dict[key] = fear_dict[key] / counter_dict[key]
-        anger_dict[key] = anger_dict[key] / counter_dict[key]
-        disgust_dict[key] = disgust_dict[key] / counter_dict[key]
-        happiness_dict[key] = happiness_dict[key] / counter_dict[key]
-        neutral_dict[key] = neutral_dict[key] / counter_dict[key]
-        sadness_dict[key] = sadness_dict[key] / counter_dict[key]
-        surprise_dict[key] = surprise_dict[key] / counter_dict[key]
-
-    return fear_dict
-
 def test():
     working_directory = os.getcwd()
     collect_data(working_directory + '/data/input.csv',working_directory + '/data/output.csv')
-    fear_dict = calculate_average()
-    print(fear_dict)
+
+test()
